@@ -1,0 +1,15 @@
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - run: cargo install worker-build
+      - run: git checkout built
+      - run: cp ~/.cargo/bin/worker-build .
+      - run: git add .
+      - run: git config --global user.email "prebuilt-cf-worker-build@github.actions"
+      - run: git config --global user.name "prebuilt-cf-worker-build"
+      - run: git commit -m "built worker-build"
+      - run: git push --force
